@@ -1,11 +1,10 @@
 import React from 'react'
 
 function Footer() {
-    const today = new Date();
 
   return (
     <footer className='Footer'>
-        <p>Copyright &copy; {`${today.getDate()} / ${today.getMonth()+1} / ${today.getFullYear()}`}</p>
+        <p>Copyright &copy; All Rights Reserved.</p>
     </footer>
   )
 }

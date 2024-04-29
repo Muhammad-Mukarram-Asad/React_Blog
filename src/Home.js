@@ -6,7 +6,7 @@ function Home({posts}) {
     {posts.length ? (
         <Feed posts={posts} />
     ) : (
-        <p style={{ marginTop: "2rem" }}>
+        <p style={{ marginTop: "2rem", color:"red", fontSize: "1.5rem"}}>
             No posts to display.
         </p>
     )}

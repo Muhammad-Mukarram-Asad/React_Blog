@@ -1,9 +1,8 @@
 import './App.css';
-
 import Navbar from "./Navbar.js";
 import Header from "./Header.js"
 import Home from "./Home.js"
-import PostPage from "./PostPage.js"
+import PostPage from "./PostPage.jsx"
 import Footer from "./Footer.js"
 import About from "./About.js"
 import Missing from "./Missing.js"
@@ -12,6 +11,7 @@ import NewPost from './NewPost';
 import {Route,Routes, useNavigate} from "react-router-dom";
 import { useState, useEffect} from 'react';
 import { format } from 'date-fns';
+import EditPost from './EditPost.js';
 
 
 function App() {
@@ -19,26 +19,26 @@ function App() {
     {
       id: 1,
       title: "My First Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
+      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!",
+      datetime: "July 01, 2021 11:17:36 AM"
     },
     {
       id: 2,
       title: "My 2nd Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
+      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!",
+      datetime: "July 01, 2021 11:17:36 AM"
     },
     {
       id: 3,
       title: "My 3rd Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
+      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!",
+      datetime: "July 01, 2021 11:17:36 AM"
     },
     {
       id: 4,
       title: "My Fourth Post",
-      datetime: "July 01, 2021 11:17:36 AM",
-      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!"
+      body: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quis consequatur expedita, assumenda similique non optio! Modi nesciunt excepturi corrupti atque blanditiis quo nobis, non optio quae possimus illum exercitationem ipsa!",
+      datetime: "July 01, 2021 11:17:36 AM"
     }
   ])
   const [search, setSearch] = useState('');
@@ -46,6 +46,13 @@ function App() {
   const [postTitle, setPostTitle] = useState('');
   const [postBody, setPostBody] = useState('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedPosts = JSON.parse(sessionStorage.getItem("all Posts"));
+    if (storedPosts) {
+      setPosts(storedPosts);
+    }
+  }, []);
   
   useEffect(() => {
     const filteredResults = posts.filter((post) =>
@@ -64,13 +71,17 @@ function App() {
     setPosts(allPosts);
     setPostTitle('');
     setPostBody('');
-    navigate("/")
+    navigate("/");
   }
+
+  useEffect(() => {
+    sessionStorage.setItem("all Posts", JSON.stringify(posts));
+  }, [posts]);
 
   const handleDelete = (id) => {
     const postsList = posts.filter(post => post.id !== id);
     setPosts(postsList);
-    // navigate('/');
+    navigate('/');
   }
   return (
     <div className="App">
@@ -91,10 +102,14 @@ function App() {
         
         <Route path="/post/:id" element={<PostPage 
         posts={posts} 
-        handleDelete={handleDelete} /> }
+        handleDelete={handleDelete}
+        setPosts={setPosts}
+         /> }
          />
 
         <Route  path="/about" element={<About /> } />
+        <Route  path="/editPost/:id" element={<EditPost /> } />
+
         <Route  path="*" element={<Missing />} />
       </Routes>
 
